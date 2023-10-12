@@ -13,14 +13,21 @@ import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import static javax.persistence.ParameterMode.IN;
+import static javax.persistence.ParameterMode.OUT;
+import static javax.persistence.ParameterMode.REF_CURSOR;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,9 +40,19 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "USUARIO")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Usuario.findByNombre", query = "select u from Usuario u where upper(u.nombreUsuario) like upper(:query) and u.estatus = 'A' order by u.nombreUsuario asc"),
-    @NamedQuery(name = "Usuario.findById", query = "select u from Usuario u where u.idUsuario = :user")
+//@NamedNativeQueries({
+//    @NamedNativeQuery(name = "Usuario.findByNombre", query = "select * from usuario where upper(id_empleado|| ' '||nombre_usuario) like upper(:query) and estatus ='A'",resultClass =Usuario.class)
+//})
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(
+            name = "Usuario.findByNombre", 
+            procedureName = "get_users_by_name", 
+            parameters = {
+                        @StoredProcedureParameter(mode = IN, name = "p_in_value", type = String.class),
+                        @StoredProcedureParameter(mode = REF_CURSOR, name = "p_cursor_out", type = void.class)
+            },
+            resultClasses = {Usuario.class}
+    )
 })
 @SqlResultSetMappings({
     @SqlResultSetMapping(name = "UsuarioMapping", classes = {
@@ -106,6 +123,9 @@ public class Usuario implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userUenRol")
     private List<RolesPorUsuarioRecibo> rolesPorUsuarioList;
+    
+    @Transient
+    private String idEmpName;
 
     public Usuario() {
     }
@@ -301,4 +321,14 @@ public class Usuario implements Serializable {
         return "com.metalsa.core.model.Usuario[ idUsuario=" + idUsuario + " ]";
     }
 
+<<<<<<< HEAD
+=======
+    public String getIdEmpName() {
+        return this.idEmpleado + " - " + this.nombreUsuario;
+    }
+
+    public void setIdEmpName(String idEmpName) {
+        this.idEmpName = idEmpName;
+    }   
+>>>>>>> mexico
 }

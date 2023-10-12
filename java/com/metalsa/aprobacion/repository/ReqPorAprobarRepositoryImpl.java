@@ -509,6 +509,7 @@ public class ReqPorAprobarRepositoryImpl implements ReqPorAprobarProcedures {
         }
         return site;
     }
+<<<<<<< HEAD
     
     //<RELEASE_BRASIL>
     @Override
@@ -540,4 +541,6 @@ public class ReqPorAprobarRepositoryImpl implements ReqPorAprobarProcedures {
         return result;
     }
     //</RELEASE_BRASIL>
+=======
+>>>>>>> mexico
 }

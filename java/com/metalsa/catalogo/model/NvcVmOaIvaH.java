@@ -7,6 +7,10 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+<<<<<<< HEAD
+=======
+import javax.persistence.EntityManager;
+>>>>>>> mexico
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "NvcVmOaIvaH.findAll", query = "SELECT n FROM NvcVmOaIvaH n")
     ,
+<<<<<<< HEAD
     @NamedQuery(name = "NvcVmOaIvaH.getIvasByIdUen", query = "SELECT n FROM NvcVmOaIvaH n WHERE n.nvcVmOaIvaHPK.idUen = :idUen and n.active = 1")
+=======
+    @NamedQuery(name = "NvcVmOaIvaH.getIvasByIdUen", query = "SELECT n FROM NvcVmOaIvaH n WHERE n.nvcVmOaIvaHPK.idUen = :idUen and n.active = 1"),
+    @NamedQuery(name = "NvcVmOaIvaH.findByTaxId", query = "SELECT n FROM NvcVmOaIvaH n WHERE n.taxId = :taxId")
+>>>>>>> mexico
 })
 public class NvcVmOaIvaH implements Serializable {
 
@@ -58,5 +67,14 @@ public class NvcVmOaIvaH implements Serializable {
     public void setActive(Integer active) {
         this.active = active;
     }
+<<<<<<< HEAD
+=======
+    
+    public static NvcVmOaIvaH byTaxId(BigInteger taxId, EntityManager em) {
+        return em.createNamedQuery("NvcVmOaIvaH.findByTaxId", NvcVmOaIvaH.class)
+                .setParameter("taxId", taxId)
+                .getSingleResult();
+    }
+>>>>>>> mexico
 
 }

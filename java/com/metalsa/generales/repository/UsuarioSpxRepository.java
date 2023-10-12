@@ -1,7 +1,6 @@
 package com.metalsa.generales.repository;
 
 import com.metalsa.generales.model.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -9,7 +8,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author miguel.rdz
  */
-public interface UsuarioSpxRepository extends JpaRepository<Usuario, String> {
+public interface UsuarioSpxRepository {
 
     Iterable<Usuario> findByNombre(@Param("query") String query);
     

@@ -16,6 +16,7 @@ import javax.persistence.Table;
 public class Parametro {
 
     @Id
+    @Column(name = "ID_PARAMETRO")
     private Long idParametro;
 
     @Column(name = "descripcion_parametro")
@@ -26,6 +27,11 @@ public class Parametro {
     private String tipo;
     private String idioma;
     private Integer activo;
+<<<<<<< HEAD
+=======
+    
+    @Column(name = "TIPO_VALOR")
+>>>>>>> mexico
     private String tipoValor;
 
 }

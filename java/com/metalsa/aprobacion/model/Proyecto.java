@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -13,6 +15,7 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -44,14 +47,21 @@ import lombok.Data;
 public class Proyecto implements Serializable {
 
     @Id
+    @Column(name = "ID_PROYECTO")
     Long idProyecto;
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID_UEN", nullable = false)
     Long idUen;
 
+    @Column(name = "ACTIVE")
     Short active;
 
+    @Column(name = "NOMBRE_PROYECTO")
     String nombreProyecto;
 
+    @Column(name = "COD_PROYECTO")
     String codProyecto;
 
     @OneToMany (fetch = FetchType.LAZY)

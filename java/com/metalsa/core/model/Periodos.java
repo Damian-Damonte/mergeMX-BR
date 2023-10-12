@@ -117,7 +117,11 @@ import lombok.Data;
             query = " select\n"
             + "        periodo.*\n"
             + "    from NVC_VM_PERIODOS_CONTABLES periodo\n"
+<<<<<<< HEAD
             + "    where periodo.anio  = extract(year from sysdate)\n"
+=======
+            + "    where periodo.anio  >= extract(year from sysdate)\n"
+>>>>>>> mexico
             + "    --and periodo.num_mes >= extract(month from sysdate)\n"
             + "    and periodo.idioma  = :idioma"
     )})

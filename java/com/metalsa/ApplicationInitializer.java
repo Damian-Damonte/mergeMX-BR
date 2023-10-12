@@ -3,7 +3,9 @@ package com.metalsa;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -18,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author Edgar Leal
  */
+
+
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @EnableJpaRepositories
@@ -27,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 @EntityScan(
         basePackageClasses = { ApplicationInitializer.class, Jsr310JpaConverters.class }
 )
+@SpringBootApplication(exclude = JmxAutoConfiguration.class)
 public class ApplicationInitializer extends SpringBootServletInitializer implements WebApplicationInitializer {
 
     public static void main(String[] args) {

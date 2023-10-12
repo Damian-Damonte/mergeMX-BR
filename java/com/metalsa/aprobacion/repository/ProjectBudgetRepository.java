@@ -17,6 +17,7 @@ public interface ProjectBudgetRepository extends JpaRepository<ProjectBudget, Pr
     List<ProjectBudget> findAllByUenAndProyectoOrderByTareaAscTipoGastoAsc(Long uen, Long proyecto);
 
     ProjectBudget getByProyectoAndTareaAndTipoGasto(Long proyecto, Long tarea, String tipoGasto);
+    ProjectBudget getByUenAndProyectoAndTareaAndTipoGasto(Long uen, Long proyecto, Long tarea, String tipoGasto);
 
     ProjectBudgetSemaphore getBudgetSimplified(
             @Param("prj") Long proyecto,

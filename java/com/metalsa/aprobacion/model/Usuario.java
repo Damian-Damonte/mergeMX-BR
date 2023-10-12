@@ -1,19 +1,32 @@
 package com.metalsa.aprobacion.model;
 
+import com.metalsa.requisicion.model.DcIdioma;
 import lombok.Data;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * Usuario
  */
 @Entity(name = "usuario")
 @Data
+@NamedQueries({
+    @NamedQuery(
+            name = "Usuario.findByIdUsuario",
+            query = "SELECT u FROM com.metalsa.aprobacion.model.Usuario u WHERE u.id = ?1"
+    )
+})
 public class Usuario implements Serializable {
 
     @Id
@@ -48,6 +61,9 @@ public class Usuario implements Serializable {
     
     @Column(name = "id_sucursal_proveedor")
     private Long idSucursalProveedor;
+    
+    @Column(name = "DATOS_DE_AUDITORIA", length = 50)
+    private String datosDeAuditoria;
 
     private String owner;
     
@@ -56,6 +72,10 @@ public class Usuario implements Serializable {
     
     @Column(name = "id_empleado")
     private Long idEmpleado;
+    
+    @JoinColumn(name = "IDIOMA", referencedColumnName = "SC_ID", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private DcIdioma idiomaEntity;
 
     @Column(name = "business_group_id")
     private Long businessGroupId;
@@ -128,4 +148,12 @@ public class Usuario implements Serializable {
         return Objects.equals(this.id, other.id);
     }
     //</RELEASE ARG>
+    
+    public DcIdioma getIdiomaEntity() {
+        return this.idiomaEntity;
+    }
+    
+    public String getDatosDeAuditoria() {
+        return this.datosDeAuditoria;
+    }
 }

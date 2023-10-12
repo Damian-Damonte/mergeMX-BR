@@ -1,5 +1,9 @@
 package com.metalsa.core.model;
 
+<<<<<<< HEAD
+=======
+import com.metalsa.requisicion.model.NvcTblProcesosAprobacion;
+>>>>>>> mexico
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -7,6 +11,11 @@ import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+<<<<<<< HEAD
+=======
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+>>>>>>> mexico
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
@@ -17,6 +26,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+<<<<<<< HEAD
+=======
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+>>>>>>> mexico
 import org.hibernate.type.StringType;
 
 /**
@@ -42,7 +55,15 @@ import org.hibernate.type.StringType;
     )
 })
 @NamedQueries({
+<<<<<<< HEAD
     @NamedQuery(name = "NvcTblUenUsuAprobacion.findAll", query = "SELECT n FROM NvcTblUenUsuAprobacion n")
+=======
+    @NamedQuery(name = "NvcTblUenUsuAprobacion.findAll", query = "SELECT n FROM NvcTblUenUsuAprobacion n"),
+    @NamedQuery(name = "NvcTblUenUsuAprobacion.findByUenProceso",
+            query = "SELECT n FROM NvcTblUenUsuAprobacion n "
+            + "WHERE n.uen.organizationId = ?1 "
+            + "AND n.procesoAprobacion.idProcesoAprobacion = ?2 AND n.delegado = ?3")
+>>>>>>> mexico
 })
 @NamedNativeQueries({
         @NamedNativeQuery(
@@ -74,6 +95,25 @@ public class NvcTblUenUsuAprobacion implements Serializable {
 
     @Column(name = "DELEGADO")
     private Integer delegado;
+<<<<<<< HEAD
+=======
+    
+    @JoinColumn(name = "ID_UEN", referencedColumnName = "ORGANIZATION_ID",
+        insertable = false,
+        updatable = false
+    )
+    @ManyToOne(optional = false)
+    private OaUens uen;
+    
+    @JoinColumn(
+            name = "ID_PROCESO_APROBACION",
+            referencedColumnName = "ID_PROCESO_APROBACION",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne(optional = false)
+    private NvcTblProcesosAprobacion procesoAprobacion;
+>>>>>>> mexico
 
     @Transient
     private String nombreUsuario;
@@ -131,5 +171,16 @@ public class NvcTblUenUsuAprobacion implements Serializable {
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
+<<<<<<< HEAD
 
+=======
+    
+    public OaUens getUen() {
+        return this.uen;
+    }
+
+    public NvcTblProcesosAprobacion getProcesoAprobacion() {
+        return this.procesoAprobacion;
+    }
+>>>>>>> mexico
 }

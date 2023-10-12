@@ -50,17 +50,23 @@ public class NvcTblRfq implements Serializable {
     @Column(name = "ID_RFQ")
     private Integer idRfq;
 
+    @Column(name = "ESTATUS")
     private Integer estatus;
 
+    @Column(name = "FECHA_EDICION")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaEdicion;
 
+    @Column(name = "ID_USUARIO_EDICION")
     private String idUsuarioEdicion;
 
+    @Column(name = "ID_UEN")
     private Integer idUen;
 
+    @Column(name = "ID_MEDIO")
     private Integer idMedio;
 
+    @Column(name = "ID_TERM")
     private Integer idTerm;
 
     /*@ManyToOne()
@@ -106,5 +112,9 @@ public class NvcTblRfq implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRfq")
     private List<NvcTblRfqLinea> nvcTblRfqLineaList;*/
     
+<<<<<<< HEAD
+=======
+    @Column(name = "ID_USUARIO")
+>>>>>>> mexico
     private String idUsuario;
 }

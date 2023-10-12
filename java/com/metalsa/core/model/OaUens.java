@@ -6,6 +6,7 @@
 package com.metalsa.core.model;
 
 import java.io.Serializable;
+<<<<<<< HEAD
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -17,6 +18,9 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 
+=======
+import javax.persistence.*;
+>>>>>>> mexico
 /**
  *
  * @author juliocisneros
@@ -24,6 +28,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "OA_UENS")
 //@XmlRootElement //<release_etown_recibos>
+<<<<<<< HEAD
+=======
+@NamedQuery(
+        name = "OaUens.findByOrganizationId",
+        query = "select o from OaUens o where o.organizationId = :organizationId"
+)
+>>>>>>> mexico
 @NamedNativeQueries({
     @NamedNativeQuery(
             name = "OaUens.findMainValuesById",
@@ -214,6 +225,12 @@ public class OaUens implements Serializable {
 
     @Column(name = "LOCATION_NAME")
     private String locationName;
+<<<<<<< HEAD
+=======
+    
+    @Column(name = "COMPRADOR_FAMILIA")
+    private Integer compradorFamilia;
+>>>>>>> mexico
 
     public OaUens() {
     }
@@ -346,5 +363,15 @@ public class OaUens implements Serializable {
         return "com.metalsa.dcompras.entities.OaUens[ organizationId=" + organizationId + " ]";
     }
 
+<<<<<<< HEAD
+=======
+    public Integer getCompradorFamilia() {
+        return this.compradorFamilia;
+    }
+    
+    public void setCompradorFamilia(Integer comprador) {
+        this.compradorFamilia = comprador;
+    }
+>>>>>>> mexico
 
 }

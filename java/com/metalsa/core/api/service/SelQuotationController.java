@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,9 +80,9 @@ public class SelQuotationController {
         return supplierSelSPXRepository.findAllSupSpx(Integer.parseInt(idRequisicion), Integer.parseInt(idPartida));
     }
 
-    @RequestMapping(value = "/getQuotations", method = RequestMethod.GET)//90302
+    @RequestMapping(value = "/getQuotations/{elrequisitor}", method = RequestMethod.GET)//90302
     public @ResponseBody
-    Iterable<QuotationDetailedByRequisition> getQuotations(@RequestParam("elrequisitor") String elrequisitor) {
+    Iterable<QuotationDetailedByRequisition> getQuotations(@PathVariable("elrequisitor") String elrequisitor) {
         Iterable<RequisitionId> idList = reqIdRepository.getRequisitionByIdRequisitor(elrequisitor);
         Iterable<Quotation> iter = quotationRepository.getQuotationsById(elrequisitor);
         List<QuotationDetailedByRequisition> listqd = new ArrayList<>();
@@ -126,9 +125,7 @@ public class SelQuotationController {
         String idioma;
         switch(language){
             case "es": idioma = "ESA"; break;
-            case "pt": idioma = "PTB"; break;
-            case "en": idioma = "US"; break;
-            default: idioma = "PTB"; break;
+            default: idioma = "US"; break;
         }
         return razonesSelRepository.findRazonesByLanguage(idioma);
     }

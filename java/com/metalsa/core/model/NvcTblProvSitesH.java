@@ -18,6 +18,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+<<<<<<< HEAD
+=======
+import javax.persistence.EntityManager;
+>>>>>>> mexico
 
 /**
  *
@@ -75,7 +79,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "NvcTblProvSitesH.findByAttribute3", query = "SELECT n FROM NvcTblProvSitesH n WHERE n.attribute3 = :attribute3")
     , @NamedQuery(name = "NvcTblProvSitesH.findByActive", query = "SELECT n FROM NvcTblProvSitesH n WHERE n.active = :active")
     , @NamedQuery(name = "NvcTblProvSitesH.findByTermsId", query = "SELECT n FROM NvcTblProvSitesH n WHERE n.termsId = :termsId")
+<<<<<<< HEAD
     , @NamedQuery(name = "NvcTblProvSitesH.findByAttribute6", query = "SELECT n FROM NvcTblProvSitesH n WHERE n.attribute6 = :attribute6")})
+=======
+    , @NamedQuery(name = "NvcTblProvSitesH.findByAttribute6", query = "SELECT n FROM NvcTblProvSitesH n WHERE n.attribute6 = :attribute6")
+    , @NamedQuery(name = "NvcTblProvSitesH.findByPK",
+                query = "SELECT n FROM NvcTblProvSitesH n "
+                + "WHERE n.nvcTblProvSitesHPK.idSucursalProveedor = :idSucursalProveedor "
+                + "AND n.nvcTblProvSitesHPK.idProveedor = :idProveedor ")
+})
+>>>>>>> mexico
 public class NvcTblProvSitesH implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -214,6 +227,15 @@ public class NvcTblProvSitesH implements Serializable {
     @Size(max = 220)
     @Column(name = "ATTRIBUTE6")
     private String attribute6;
+<<<<<<< HEAD
+=======
+    
+    /*@Column(name = "ID_PROVEEDOR")
+    private BigInteger idProveedor;
+    
+    @Column(name = "ID_SUCURSAL_PROVEEDOR")
+    private BigInteger idSucursalProveedor;*/
+>>>>>>> mexico
 
     public NvcTblProvSitesH() {
     }
@@ -249,6 +271,17 @@ public class NvcTblProvSitesH implements Serializable {
     public void setLastUpdatedBy(Long lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
     }
+<<<<<<< HEAD
+=======
+    
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+>>>>>>> mexico
 
     public String getVendorSiteCode() {
         return vendorSiteCode;
@@ -514,6 +547,7 @@ public class NvcTblProvSitesH implements Serializable {
         this.segment1 = segment1;
     }
 
+<<<<<<< HEAD
     public String getVendorName() {
         return vendorName;
     }
@@ -522,6 +556,8 @@ public class NvcTblProvSitesH implements Serializable {
         this.vendorName = vendorName;
     }
 
+=======
+>>>>>>> mexico
     public String getEnabledFlag() {
         return enabledFlag;
     }
@@ -601,8 +637,29 @@ public class NvcTblProvSitesH implements Serializable {
     public void setAttribute6(String attribute6) {
         this.attribute6 = attribute6;
     }
+<<<<<<< HEAD
 
     @Override
+=======
+    
+    /*public BigInteger getIdProveedor() {
+        return this.idProveedor;
+    }
+    
+    public void setIdProveedor(BigInteger id) {
+        this.idProveedor = id;
+    }*/
+    
+   /* public BigInteger getIdSucursalProveedor() {
+        return this.idSucursalProveedor;
+    }
+    
+    public void setSucursalProveedorId(BigInteger id) {
+        this.idSucursalProveedor = id;
+    }*/
+
+    /*@Override
+>>>>>>> mexico
     public int hashCode() {
         int hash = 0;
         hash += (nvcTblProvSitesHPK != null ? nvcTblProvSitesHPK.hashCode() : 0);
@@ -617,6 +674,7 @@ public class NvcTblProvSitesH implements Serializable {
         }
         NvcTblProvSitesH other = (NvcTblProvSitesH) object;
         return this.nvcTblProvSitesHPK.equals(other.nvcTblProvSitesHPK);
+<<<<<<< HEAD
            
     }
 
@@ -625,4 +683,25 @@ public class NvcTblProvSitesH implements Serializable {
         return "com.metalsa.core.model.NvcTblProvSitesH[ nvcTblProvSitesHPK=" + nvcTblProvSitesHPK + " ]";
     }
     
+=======
+        
+    }*/
+    
+    public static NvcTblProvSitesH byId(Long idProveedor, Long idSucursalProveedor, EntityManager em) {
+        return em.createNamedQuery("NvcTblProvSitesH.findByPK", NvcTblProvSitesH.class)
+                    .setParameter("idSucursalProveedor", idSucursalProveedor)
+                    .setParameter("idProveedor", idProveedor)
+                    .getSingleResult();
+    }
+    
+     public static NvcTblProvSitesH byId(Integer idProveedor, Integer idSucursalProveedor, EntityManager em) {
+        return  byId(idProveedor.longValue(), idSucursalProveedor.longValue(), em);
+    }
+
+    /*@Override
+    public String toString() {
+        return "com.metalsa.core.model.NvcTblProvSitesH[ nvcTblProvSitesHPK=" + nvcTblProvSitesHPK + " ]";
+    }*/
+    
+>>>>>>> mexico
 }

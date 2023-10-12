@@ -75,6 +75,7 @@ public class Uens implements Serializable{
     public int hashCode() {
         Integer hash = 7;
         hash = 67 * hash + Objects.hashCode(this.idUen);
+<<<<<<< HEAD
         hash = 67 * hash + Objects.hashCode(this.uenDefault);
         hash = 67 * hash + Objects.hashCode(this.nombreUen);
         hash = 67 * hash + Objects.hashCode(this.descUen);
@@ -83,6 +84,11 @@ public class Uens implements Serializable{
        
         return hash;
     }
+=======
+        return hash;
+    }
+    //</R16788>
+>>>>>>> mexico
 
     @Override
     public boolean equals(Object obj) {

@@ -51,26 +51,24 @@ public class UserAPIController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public @ResponseBody
-    User getById(@PathVariable("id") Long id) {
+    public @ResponseBody User getById(@PathVariable("id") Long id) {
         return userRepository.findOne(id);
     }
 
     @RequestMapping(value = "/findByNombre", method = RequestMethod.GET)
     public @ResponseBody
     Iterable<Usuario> findByNombre(@RequestParam("query") String query) {
-        return usuarioSpxRepository.findByNombre("%" + query.toUpperCase() + "%");
+        return usuarioSpxRepository.findByNombre(query.toUpperCase());
     }
 
     @RequestMapping(value = "/getEmpInfo/{personId}", method = RequestMethod.GET)
-    public @ResponseBody
-    PerAllPeopleF getEmpInfo(@PathVariable("personId") Long personId) {
+    public @ResponseBody PerAllPeopleF getEmpInfo(@PathVariable("personId") Long personId) {
         return headerService.getEmpInfo(personId);
     }
 
-    @RequestMapping(value = "/getRolesPerfil", method = RequestMethod.GET)
+    @RequestMapping(value = "/getRolesPerfil/{idUsuario}", method = RequestMethod.GET)
     public @ResponseBody
-    Iterable<NvcTblRolPerfil> getRolesPerfil(@RequestParam("idUsuario") String idUsuario) {
+    Iterable<NvcTblRolPerfil> getRolesPerfil(@PathVariable("idUsuario") String idUsuario) {
         return headerService.getRolesPerfil(idUsuario);
     }
 

@@ -5,7 +5,10 @@
  */
 package com.metalsa.utilerias.controller;
 
+import com.google.gson.Gson;
 import com.metalsa.utilerias.model.ClasificacionArbol;
+import com.metalsa.utilerias.pojo.AprobarExamenPojo;
+import com.metalsa.utilerias.pojo.MyHDRowSetPojo;
 import com.metalsa.utilerias.service.UtileriasService;
 import com.metalsa.utils.Constants;
 import java.util.Iterator;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  *
@@ -99,5 +104,30 @@ public class UtileriasController {
             log.error("getReclasificacion", e);
         }
         return listClasificacionArbol.toString();
+    }
+
+    @RequestMapping(value = "guardarCalificacion", method = RequestMethod.POST)
+    @ResponseBody
+    public String guardarCalificacion(@RequestBody String json) {
+        try {
+            Gson gson = new Gson();
+            MyHDRowSetPojo myHDRowSetPojo = gson.fromJson(json, MyHDRowSetPojo.class);
+            utileriasService.guardarCalificacion(myHDRowSetPojo);
+            log.debug("hola");
+        } catch (Exception e) {
+            log.error(e);
+        }
+        log.info("Hola mundo");
+        return "";
+    }
+
+    @GetMapping("aproboExamen/{url}/{idUsuario}/{idRol}")
+    public AprobarExamenPojo aproboExamen(@PathVariable("url") String url, @PathVariable("idUsuario") String idUsuario, @PathVariable("idRol") Integer idRol) {
+        return utileriasService.aproboExamen(url, idUsuario, idRol);
+    }
+
+    @GetMapping("/status")
+    public String statusApp() {
+        return "UP";
     }
 }

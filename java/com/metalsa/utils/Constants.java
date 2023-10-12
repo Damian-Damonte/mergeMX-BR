@@ -20,6 +20,7 @@ public class Constants {
     public static final String URI_API_MENU = "/api/v1/menu";
     public static final String URI_API_APROBACIONES = "/api/v1/aprobacion";
     public static final String URI_API_REQUISIONES = "/api/v1/req";
+    public static final String URI_API_REQUISIONES_B = "/api/v1/requisiciones";
     public static final String URI_API_CARROCOMPRAS = "/api/v1/cart";
     public static final String URI_API_UENS = "/api/v1/uens";
     public static final String URI_API_CC = "/api/v1/cc";
@@ -224,6 +225,9 @@ public class Constants {
             + "}";
 
     //</RELEASE ARG>
+
+    public static final int PRECIO_FIJO = 1;
+
     //<MDA_MULTICC>
     public static enum TIPO_CARGO {
         PROYECTO(1), CENTRO_COSTO(2), MULTI_CC(3);
@@ -238,4 +242,23 @@ public class Constants {
         }
     }
     //<MDA_MULTICC>
+    public static final String DATE_PATTERN_DD_MM_YYYY = "dd/MM/yyyy";
+    
+    public enum TIPO_ITEM {
+
+        CATALOGO(1),
+        ALMACEN(2),
+        SPOT(3),
+        TODOS(3);
+
+        private Integer type;
+
+        private TIPO_ITEM(Integer type) {
+            this.type = type;
+        }
+
+        public Integer getType() {
+            return type;
+        }
+    }
 }

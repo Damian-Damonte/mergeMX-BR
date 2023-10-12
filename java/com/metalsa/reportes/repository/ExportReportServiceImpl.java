@@ -18,6 +18,8 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import lombok.extern.log4j.Log4j;
@@ -28,6 +30,7 @@ import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.DataValidationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -39,8 +42,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFName;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
@@ -117,12 +123,12 @@ public class ExportReportServiceImpl implements ExportReportService {
 
     @Override
     public ByteArrayInputStream getReporteVariacion(ExportModel model) {
-
+        log.debug("entramos en ExportReportServiceImpl.getReporteVariacion");
         LOCALE = new Locale(model.getIdioma());
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet(messages.getMessage("lbl_variacion", null, LOCALE));
+        XSSFSheet sheet = workbook.createSheet(messages.getMessage("lbl_variacion", null, LOCALE));
 
         HEADER_STYLE = getHeaderStyle(workbook);
         SUB_HEADER_STYLE = getSubHeaderStyle(workbook);
@@ -133,24 +139,30 @@ public class ExportReportServiceImpl implements ExportReportService {
         PERCENT_STYLE = getDataStyle(workbook);
         PERCENT_STYLE.setDataFormat(workbook.createDataFormat().getFormat(FORMATS.PERCENT.STRING_FORMAT));
 
+        Index idx = new Index(1, 0);
+        final List<Variacion> variaciones = model.getVariaciones();
+        XSSFRow rccheader;
+        CellRangeAddress ccregion, respregion;
+        Drawing drw;
         try {
-
-            Index idx = new Index(1, 0);
             this.createFilterHeaders(model, workbook, sheet, idx);
+            drw = sheet.createDrawingPatriarch();
             idx.getNextRow();
 
-            for (Variacion data : model.getVariaciones()) {
+            Collections.reverse(variaciones);
 
-                Row rccheader = sheet.createRow(idx.getNextRow());
+            for (Variacion data : variaciones) {
+
+                rccheader = sheet.createRow(idx.getNextRow());
                 this.addTextCell(rccheader, idx.getNextCol(), messages.getMessage("lbl_centro_costo", null, LOCALE), HEADER_STYLE);
                 this.addTextCell(rccheader, idx.getNextCol(), data.getCodigoCC() + " - " + data.getNombreCC(), TEXT_STYLE);
-                CellRangeAddress ccregion = new CellRangeAddress(idx.getRow(), idx.getRow(), idx.getCol(), idx.getNextCol(3));
+                ccregion = new CellRangeAddress(idx.getRow(), idx.getRow(), idx.getCol(), idx.getNextCol(3));
                 addRegionBorder(sheet, ccregion, COLORS.BORDER_DARK_BLUE.getXssfcolor());
                 sheet.addMergedRegion(ccregion);
 
                 this.addTextCell(rccheader, idx.getNextCol(), messages.getMessage("lbl_responsable", null, LOCALE), HEADER_STYLE);
                 this.addTextCell(rccheader, idx.getNextCol(), data.getResponsable(), TEXT_STYLE);
-                CellRangeAddress respregion = new CellRangeAddress(idx.getRow(), idx.getRow(), idx.getCol(), idx.getNextCol(3));
+                respregion = new CellRangeAddress(idx.getRow(), idx.getRow(), idx.getCol(), idx.getNextCol(3));
                 addRegionBorder(sheet, respregion, COLORS.BORDER_DARK_BLUE.getXssfcolor());
                 sheet.addMergedRegion(respregion);
 
@@ -159,33 +171,37 @@ public class ExportReportServiceImpl implements ExportReportService {
 
                 if (data.getChartImages() != null) {
                     data.getChartImages().forEach(image -> {
-                        int pictureureIdx = workbook.addPicture(image, Workbook.PICTURE_TYPE_PNG);
+                        int pictureureIdx = workbook.addPicture(image, XSSFWorkbook.PICTURE_TYPE_DIB);
                         ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
                         anchor.setCol1(idx.getNextCol(2));
                         anchor.setRow1(idx.getRow() - 2);
-                        sheet.createDrawingPatriarch().createPicture(anchor, pictureureIdx).resize();
+                        drw.createPicture(anchor, pictureureIdx).resize();
                         idx.getNextCol(8);
                     });
                 }
 
                 data.getLineas().forEach(linea -> this.mapBudgetValue(sheet, linea, linea.getNombreCategoria(), idx, NUMBER_STYLE));
                 idx.getNextRow();
-                System.gc();
             }
+            System.gc();
             sheet.setDisplayGridlines(false);
 
             idx.row = 0;
             idx.col = 0;
-            Sheet sheet2 = workbook.createSheet(messages.getMessage("lbl_variacion", null, LOCALE) + "__");
+            XSSFSheet sheet2 = workbook.createSheet(messages.getMessage("lbl_variacion", null, LOCALE) + "__");
             this.mapBudgetHeader(sheet2, messages.getMessage("lbl_categoria", null, LOCALE), idx);
             this.addTextCell(sheet2.getRow(idx.getRow()), 0, messages.getMessage("lbl_centro_costo", null, LOCALE), HEADER_STYLE);
-
-            for (Variacion data : model.getVariaciones()) {
+            
+            log.debug("inicia segundo ciclo");
+            for (Variacion data : variaciones) {
+                log.debug("Ciclo 2 CodigoCC :" + data.getCodigoCC() + " NombreCC :" + data.getNombreCC() + " Responsable :" + data.getResponsable() 
+                        + " Total :" + data.getTotal() + " Lineas :" + data.getLineas().size());
                 data.getLineas().forEach(linea -> {
                     this.mapBudgetValue(sheet2, linea, linea.getNombreCategoria(), idx, NUMBER_STYLE);
                     this.addTextCell(sheet2.getRow(idx.getRow()), 0, linea.getCodigoCC() + " " + linea.getNombreCC(), TEXT_STYLE);
                 });
             }
+            log.debug("termino segundo ciclo");
 
             workbook.write(out);
             workbook.close();
@@ -216,7 +232,7 @@ public class ExportReportServiceImpl implements ExportReportService {
         try {
 
             Index idx = new Index(1, 0);
-            Sheet sheetvariacion = workbook.createSheet(messages.getMessage("lbl_estado_cuenta_cc", null, LOCALE));
+            XSSFSheet sheetvariacion = workbook.createSheet(messages.getMessage("lbl_estado_cuenta_cc", null, LOCALE));
             sheetvariacion.setDisplayGridlines(false);
             this.createFilterHeaders(model, workbook, sheetvariacion, idx);
             idx.getNextRow();
@@ -235,7 +251,7 @@ public class ExportReportServiceImpl implements ExportReportService {
                     idx.row = temprow1;
                     int col = 12;
 
-                    Row r1 = sheetvariacion.getRow(idx.getNextRow());
+                    XSSFRow r1 = sheetvariacion.getRow(idx.getNextRow());
                     this.addTextCell(r1, col, messages.getMessage("lbl_gasto_real", null, LOCALE), (XSSFCellStyle) HEADER_STYLE.clone()).getCellStyle().setAlignment(HorizontalAlignment.CENTER);;
                     CellRangeAddress lblgastoreal = new CellRangeAddress(idx.getRow(), idx.getRow(), col, col + 1);
                     addRegionBorder(sheetvariacion, lblgastoreal, COLORS.BORDER_DARK_BLUE.getXssfcolor());
@@ -481,7 +497,7 @@ public class ExportReportServiceImpl implements ExportReportService {
                         this.addNumberCell(row, idx.getNextCol(), gasto.getPrecio(), NUMBER_STYLE);
                         this.addNumberCell(row, idx.getNextCol(), gasto.getMonto(), NUMBER_STYLE);
                         this.addTextCell(row, idx.getNextCol(), gasto.getMoneda(), TEXT_STYLE);
-                        this.addTextCell(row, idx.getNextCol(), gasto.getMoneda_local(), TEXT_STYLE);
+                        this.addNumberCell(row, idx.getNextCol(),gasto.getMoneda_local()== null ? 0 : Double.valueOf(gasto.getMoneda_local()), NUMBER_STYLE);
                         this.addTextCell(row, idx.getNextCol(), gasto.getSolicitante(), TEXT_STYLE);
                         this.addTextCell(row, idx.getNextCol(), gasto.getPreAprobador(), TEXT_STYLE);
                         this.addTextCell(row, idx.getNextCol(), gasto.getAprobador(), TEXT_STYLE);
@@ -1045,7 +1061,6 @@ public class ExportReportServiceImpl implements ExportReportService {
 
     @Override
     public ByteArrayInputStream getReportePresupuestoAnual(ExportModel model) {
-
         byte output[] = new byte[]{};
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -1062,9 +1077,10 @@ public class ExportReportServiceImpl implements ExportReportService {
         NUMBER_STYLE.setDataFormat(FORMATS.CURRENCY.INDEX_FORMAT);
 
         this.createFilterHeaders(model, workbook, sheet, idx);
-
         idx.setRow(idx.getRow() + 2);
-        for (PresupuestoAnual data : model.getPresupuestoAnual()) {
+        final List<PresupuestoAnual> presupuesto = model.getPresupuestoAnual();
+        Collections.reverse(presupuesto);
+        for (PresupuestoAnual data : presupuesto) {
 
             Row rowccheader = sheet.createRow(idx.getNextRow());
             this.addTextCell(rowccheader, idx.getNextCol(), messages.getMessage("lbl_centro_costo", null, LOCALE), HEADER_STYLE);
@@ -1119,7 +1135,7 @@ public class ExportReportServiceImpl implements ExportReportService {
         this.addTextCell(sheet2.getRow(idx.getRow()), 0, messages.getMessage("lbl_centro_costo", null, LOCALE), HEADER_STYLE);
         this.addTextCell(sheet2.getRow(idx.getRow()), idx.getNextCol(), messages.getMessage("lbl_total", null, LOCALE), HEADER_STYLE);
 
-        for (PresupuestoAnual data : model.getPresupuestoAnual()) {
+        for (PresupuestoAnual data : presupuesto) {
             data.getLineas().forEach(linea -> {
                 Row trx = sheet2.createRow(idx.getNextRow());
                 this.mapearMeses(linea, trx, linea.getTipo(), idx, NUMBER_STYLE);
@@ -1129,7 +1145,6 @@ public class ExportReportServiceImpl implements ExportReportService {
         }
 
         try {
-
             workbook.write(out);
             workbook.close();
             output = out.toByteArray();

@@ -16,6 +16,7 @@ import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.ParameterMode;
 import static javax.persistence.ParameterMode.IN;
 import static javax.persistence.ParameterMode.OUT;
 import javax.persistence.StoredProcedureParameter;
@@ -101,6 +102,20 @@ import org.hibernate.annotations.Filter;
                         @StoredProcedureParameter(mode = IN, name = "p_usuario", type = String.class),
                         @StoredProcedureParameter(mode = OUT, name = "out_value", type = Integer.class),
                         @StoredProcedureParameter(mode = OUT, name = "out_message", type = String.class)
+<<<<<<< HEAD
+=======
+            }),
+    @NamedStoredProcedureQuery(
+            name = "siguiente_aprobador",
+            procedureName = "nvc_pkg_request_manager_spx.siguiente_aprobador",
+            resultSetMappings = "UsuarioMapping",
+            parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN,  name = "P_ID_SOLICITUD",    type = Integer.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN,  name = "P_ID_UEN",          type = Long.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN,  name = "P_ID_CC_ORIGEN",    type = Long.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN,  name = "P_TIPO",            type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, name = "P_ID_USUARIOS",     type = String.class)
+>>>>>>> mexico
             })
 })
 //<R16788>
@@ -295,6 +310,33 @@ import org.hibernate.annotations.Filter;
                     "WHERE si.usuario_creacion = ?2\n" +
                     "ORDER BY si.id_solicitud_presupuesto ASC",
             resultClass = SolicitudIncremento.class
+<<<<<<< HEAD
+=======
+    ),
+    //</R16788>
+    @NamedNativeQuery(
+            name = "SolicitudIncremento.findByIdSolicitudPresupuesto",
+                query = "SELECT si.ID_SOLICITUD_PRESUPUESTO,  \n" +
+                        "  si.ID_UEN                   , \n" +
+                        "  si.ID_CC_DESTINO             ,\n" +
+                        "  si.ID_CC_ORIGEN              ,\n" +
+                        "  si.PERIODO_DESTINO           ,\n" +
+                        "  si.PERIODO_ORIGEN            ,\n" +
+                        "  si.FECHA_NECESIDAD           ,\n" +
+                        "  si.RAZON                     ,\n" +
+                        "  si.USUARIO_CREACION          ,\n" +
+                        "  '' nombre_usuario            ,\n" +
+                        "  si.FECHA_CREACION            ,\n" +
+                        "  '' nombre_uen                ,\n" +
+                        "  '' codigo_cc                 ,\n" +
+                        "  '' nombre_cc                 ,\n" +
+                        "  '' codigo_cc_origen          ,\n" +
+                        "  '' nombre_cc_origen          ,\n" +
+                        "  si.TIPO                       \n" +
+                        " FROM NVC_TBL_SOLICITUD_PRESUPUESTO si \n" +
+                        " WHERE si.ID_SOLICITUD_PRESUPUESTO = ?1",
+            resultClass = SolicitudIncremento.class
+>>>>>>> mexico
     )
     //</R16788>
         

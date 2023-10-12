@@ -149,4 +149,19 @@ public class SolicitudIncrementoRepositoryImpl {
         }
         return resp;
     }
+    String siguienteAprobador(Integer id_solicitud, Long idUen, Long idCcOrigen, String tipo){
+        String resp = "";
+        StoredProcedureQuery proc = em.createNamedStoredProcedureQuery("siguiente_aprobador");
+        proc.setParameter("P_ID_SOLICITUD", id_solicitud);
+        proc.setParameter("P_ID_UEN", idUen);
+        proc.setParameter("P_ID_CC_ORIGEN", idCcOrigen);
+        proc.setParameter("P_TIPO", tipo);
+        try {
+            proc.execute();
+            resp = (String)proc.getOutputParameterValue("P_ID_USUARIOS");
+        } catch (Exception e) {
+            throw new RuntimeException("Error ejecutando procedimiento: nvc_pkg_request_manager_spx.siguiente_aprobador", e);
+        }
+        return resp;
+    }
 }

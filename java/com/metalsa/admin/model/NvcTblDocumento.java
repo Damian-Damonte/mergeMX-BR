@@ -63,6 +63,13 @@ public class NvcTblDocumento implements Serializable {
     private Long provDirId;
     @Column(name = "ID_UEN")
     private Integer idUen;
-            
+        
+    public Long getProvDirId() {
+        return this.provDirId;
+    }
+    
+    public Integer getIdUen() {
+        return this.idUen;
+    }
 
 }

@@ -28,7 +28,11 @@ public class NvcTblProvSitesHPK implements Serializable {
     @Column(name = "ID_SUCURSAL_PROVEEDOR")
     private Long idSucursalProveedor;
 
+<<<<<<< HEAD
     public NvcTblProvSitesHPK() {
+=======
+   public NvcTblProvSitesHPK() {
+>>>>>>> mexico
     }
 
     public NvcTblProvSitesHPK(Long idProveedor, Long idSucursalProveedor) {

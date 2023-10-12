@@ -1,5 +1,10 @@
 package com.metalsa.catalogo.model;
 
+<<<<<<< HEAD
+=======
+import com.metalsa.aprobacion.model.Usuario;
+import com.metalsa.core.model.OaUens;
+>>>>>>> mexico
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +14,19 @@ import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+<<<<<<< HEAD
+=======
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+>>>>>>> mexico
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+<<<<<<< HEAD
+=======
+import javax.persistence.OneToMany;
+>>>>>>> mexico
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
@@ -121,6 +135,19 @@ public class NvcTblCatalogoUen implements Serializable {
     private Integer idUen;
     @Column(name = "ID_CATALOGO")
     private Integer idCatalogo;
+<<<<<<< HEAD
+=======
+    
+    @JoinColumn(
+            name = "ID_CATALOGO",
+            referencedColumnName = "ID_CATALOGO",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    private NvcTblCatalogo catalogo;
+    
+>>>>>>> mexico
     @Column(name = "TIPO_RECIBO")
     private Integer tipoRecibo;
     @Column(name = "ID_FACTURACION")
@@ -129,6 +156,19 @@ public class NvcTblCatalogoUen implements Serializable {
     private String ocManual;
     @Column(name = "ID_COMPRADOR")
     private String idComprador;
+<<<<<<< HEAD
+=======
+    
+    @JoinColumn(
+            name = "ID_COMPRADOR",
+            referencedColumnName = "ID_USUARIO",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    private Usuario comprador;
+    
+>>>>>>> mexico
     @Column(name = "ID_TIPO_PRECIO")
     private Integer tipoPrecio;
     @Column(name = "ID_IVA")
@@ -143,6 +183,19 @@ public class NvcTblCatalogoUen implements Serializable {
     private List<NvcTblOaLocalizacionesH> billToList;
     @Transient
     private String aprobadorCatalogo;
+<<<<<<< HEAD
+=======
+    
+    @JoinColumn(
+            name = "ID_UEN",
+            referencedColumnName = "ORGANIZATION_ID",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    private OaUens uen;
+    
+>>>>>>> mexico
 
     public NvcTblCatalogoUen() {
     }
@@ -344,4 +397,18 @@ public class NvcTblCatalogoUen implements Serializable {
         this.aprobadorCatalogo = aprobadorCatalogo;
     }
 
+<<<<<<< HEAD
+=======
+    public OaUens getUen() {
+        return this.uen;
+    }
+    
+    public Usuario getComprador() {
+        return this.comprador;
+    }
+    
+    public NvcTblCatalogo getCatalogo() {
+        return this.catalogo;
+    }
+>>>>>>> mexico
 }

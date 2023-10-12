@@ -6,6 +6,8 @@
 package com.metalsa.utilerias.service;
 
 import com.metalsa.utilerias.model.ClasificacionArbol;
+import com.metalsa.utilerias.pojo.AprobarExamenPojo;
+import com.metalsa.utilerias.pojo.MyHDRowSetPojo;
 import java.util.List;
 
 /**
@@ -16,5 +18,7 @@ public interface UtileriasService {
 
     List<ClasificacionArbol> getReclasificacion(Long idSubFamila);
 
+    void guardarCalificacion(MyHDRowSetPojo myHDRowSetPojo);
+    AprobarExamenPojo aproboExamen(String url, String idUsuario, Integer idRol);
 
 }

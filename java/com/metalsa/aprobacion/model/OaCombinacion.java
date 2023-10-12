@@ -83,7 +83,7 @@ import java.util.Date;
                         "  and cat.id_uen = a.id_uen " +
                         "  and cat.cost_center_id = cc.id_cc " +
                         "  and cat.period_name = t.period_name " +
-                        "  and t.period_set_name = 'Accounting' " +
+                        "  and t.period_set_name = 'Contable' " +
                         "  and trunc(sysdate) between trunc(t.start_date) and trunc(t.end_date) " +
                         "  and icom_budget_trx_pkg.get_category(a.id_cuenta) = cat.category_id " +
                         "  and cc.lenguaje = a.language " +
@@ -107,7 +107,7 @@ import java.util.Date;
                         "  and cat.id_uen = a.id_uen " +
                         "  and cat.cost_center_id = cc.id_cc " +
                         "  and cat.period_name = t.period_name " +
-                        "  and t.period_set_name = 'Accounting' " +
+                        "  and t.period_set_name = 'Contable' " +
                         "  and trunc(sysdate) between trunc(t.start_date) and trunc(t.end_date) " +
                         "  and icom_budget_trx_pkg.get_category(a.id_cuenta) = cat.category_id " +
                         "  and cc.lenguaje = a.language " +
@@ -126,7 +126,7 @@ import java.util.Date;
                         "  join nvc_vm_oa_cc cc on cc.id_uen = a.id_uen " +
                         "    and cc.lenguaje = a.language " +
                         "    and cc.codigo_cc = a.segmento_2 " +
-                        "  join nvc_vm_gl_periods t on t.period_set_name = 'Accounting' " +
+                        "  join nvc_vm_gl_periods t on t.period_set_name = 'Contable' " +
                         "    and trunc(sysdate) between trunc(t.start_date) and trunc(t.end_date) " +
                         "  join icom_category_budget_v cat on cat.id_uen = a.id_uen " +
                         "    and cat.cost_center_id = cc.id_cc " +
@@ -145,7 +145,7 @@ import java.util.Date;
                         "  join nvc_vm_oa_cc cc on cc.id_uen = a.id_uen " +
                         "    and cc.lenguaje = a.language " +
                         "    and cc.codigo_cc = a.segmento_2 " +
-                        "  join nvc_vm_gl_periods t on t.period_set_name = 'Accounting' " +
+                        "  join nvc_vm_gl_periods t on t.period_set_name = 'Contable' " +
                         "    and trunc(sysdate) between trunc(t.start_date) and trunc(t.end_date) " +
                         "  join icom_category_budget_v cat on cat.id_uen = a.id_uen " +
                         "    and cat.cost_center_id = cc.id_cc " +
@@ -156,6 +156,11 @@ import java.util.Date;
                         "  and cc.id_cc = :cc "
         )
 })
+@NamedQuery(
+        name = "OaCombinacion.findCuenta",
+        query = "SELECT c FROM NVC_TBL_OA_COMBINACIONES c " +
+                "WHERE c.cuenta = :cuenta AND c.uen = :uen AND c.idioma = :idioma"
+)
 public class OaCombinacion implements Serializable {
     @Id
     @Column(name = "id_cuenta")
@@ -191,6 +196,8 @@ public class OaCombinacion implements Serializable {
 
     @Column(name = "end_date_active")
     private Date endActive;
+    
+    @Column(name = "CUENTA_NATURAL")
     private String cuentaNatural;
 
     @Id
@@ -203,6 +210,11 @@ public class OaCombinacion implements Serializable {
 
     @Column(name = "chart_of_accounts_id")
     private Long chartOfAccounts;
+
+
+    @Transient
+    private double saldo;
+    
 
     /**
      * OaCombinacion primary key
@@ -242,3 +254,4 @@ public class OaCombinacion implements Serializable {
             this.endActive = (Date) endActive.clone();
     }
 }
+

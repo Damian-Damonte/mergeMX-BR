@@ -18,6 +18,10 @@ public class InventarioFisicoRequest {
     private Map<String, String> uen;
     private List<FuenteInvFisRequest> fuentes;
     private List<UsuarioInvFisRequest> usuarios;
+<<<<<<< HEAD
+=======
+    private List<AlmacenInvFisRequest> almacenes;
+>>>>>>> mexico
 
     public int getActivo() {
         return activo;
@@ -51,4 +55,15 @@ public class InventarioFisicoRequest {
         this.usuarios = usuarios;
     }
 
+<<<<<<< HEAD
+=======
+    public List<AlmacenInvFisRequest> getAlmacen() {
+        return almacenes;
+    }
+
+    public void setAlmacen(List<AlmacenInvFisRequest> almacenes) {
+        this.almacenes = almacenes;
+    }
+
+>>>>>>> mexico
 }

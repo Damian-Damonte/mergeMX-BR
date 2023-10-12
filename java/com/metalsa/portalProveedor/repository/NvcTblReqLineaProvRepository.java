@@ -20,12 +20,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NvcTblReqLineaProvRepository extends PagingAndSortingRepository<NvcTblReqLineaProv, Integer> {
-
     @Query(value = "SELECT rlp FROM NvcTblReqLineaProv rlp "
             + "INNER JOIN rlp.idRfqProv rp "
             + "WHERE rp.idRfq.idRfq = :idRfq "
             + "AND rp.nvcTblProvSitesH.nvcTblProvSitesHPK.idProveedor = :idProveedor "
-            + "AND rlp.idEstatus = (SELECT es.scId FROM DcEstatus es WHERE es.descEstatus = 'PENDIENTE') "
+            + "AND rlp.idEstatus = (SELECT es.scId FROM com.metalsa.portalProveedor.model.DcEstatus es WHERE es.descEstatus = 'PENDIENTE'  ) "
             + "AND rlp.declinada = 'NO'"
            // + "AND rp.nvcTblProvSitesH.nvcTblProvSitesHPK.idSucursalProveedor = :idSucProveedor "
             + " ORDER BY rlp.rfqLinea.detalleRequisicion.requisicion, "

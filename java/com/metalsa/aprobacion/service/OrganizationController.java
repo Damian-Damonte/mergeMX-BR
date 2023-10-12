@@ -66,4 +66,11 @@ public class OrganizationController {
     public Iterable<NvcTblOrganizacionesH> getUensActivasDispByUser(@PathVariable("user") String usuario) {
         return uens.getUensActivasDispByUser(usuario);
     }
+
+    @GetMapping("/uens-por-usuario")
+    public Iterable<NvcTblOrganizacionesH> getUensActivasByUser(@RequestHeader("X-SPX-UserId") String userId) {
+        return uens.getUensActivasByUser2(userId);
+    }
+
+
 }

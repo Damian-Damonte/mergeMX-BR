@@ -102,7 +102,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 "       NVL (PROV.ID_PROV_INTERNO, 0) EXT,      \n" +
 "       RC.NOMBRE_US STRRZ_SEL_EN,\n" +
 "       RC.NOMBRE_ESA STRRZ_SEL_ES,\n" +
+<<<<<<< HEAD
 "       RC.NOMBRE_PTB STRRZ_SEL_PT,\n" +
+=======
+>>>>>>> mexico
 "       RC.ID_RAZON,\n" +
 "       PROVL.MOSTRAR_DOC_QUOT,\n" +
 "       CASE\n" +
@@ -222,9 +225,13 @@ import javax.xml.bind.annotation.XmlRootElement;
                     
                           @ColumnResult(name="TIPO_CAMBIO", type = Double.class),
                           
+<<<<<<< HEAD
                           @ColumnResult(name = "MOSTRAR_DOC_QUOT", type = Integer.class),
 
                           @ColumnResult(name="STRRZ_SEL_PT", type = String.class)
+=======
+                          @ColumnResult(name = "MOSTRAR_DOC_QUOT", type = Integer.class)
+>>>>>>> mexico
             })})})
 public class SupplierSelSPX implements Serializable {
 
@@ -254,7 +261,10 @@ public class SupplierSelSPX implements Serializable {
     private Integer RAZON_SELECCION_COTIZACION;
     private String STRRZ_SEL_EN;
     private String STRRZ_SEL_ES;
+<<<<<<< HEAD
     private String STRRZ_SEL_PT;
+=======
+>>>>>>> mexico
     private String COMPRADOR;
     private String JSONGASTOAD;
     private Integer ID_RAZON;
@@ -293,8 +303,12 @@ public class SupplierSelSPX implements Serializable {
             Double GASTO, Integer LINEA_PROV, Integer RAZON_SELECCION_COTIZACION,
             String STRRZ_SEL_EN, String COMPRADOR, String STRRZ_SEL_ES
             , String JSONGASTOAD, Integer ID_RAZON, Integer TIENEDOCUMENTOS, Integer TIENEBACKORDERS,
+<<<<<<< HEAD
             String NOMBRECOMPRADOR, Double TIPO_CAMBIO, Integer MOSTRAR_DOC_QUOT, 
             String STRRZ_SEL_PT
+=======
+            String NOMBRECOMPRADOR, Double TIPO_CAMBIO, Integer MOSTRAR_DOC_QUOT
+>>>>>>> mexico
     ) {
         this.ID_RFQ = ID_RFQ;
         this.ID_PROVEEDOR = ID_PROVEEDOR;
@@ -327,7 +341,10 @@ public class SupplierSelSPX implements Serializable {
         this.NOMBRECOMPRADOR= NOMBRECOMPRADOR;
         this.TIPO_CAMBIO = TIPO_CAMBIO;
         this.MOSTRAR_DOC_QUOT = MOSTRAR_DOC_QUOT;
+<<<<<<< HEAD
         this.STRRZ_SEL_PT = STRRZ_SEL_PT;
+=======
+>>>>>>> mexico
     }
 
     public Integer getMOSTRAR_DOC_QUOT() {
@@ -604,6 +621,7 @@ public class SupplierSelSPX implements Serializable {
     public void setBackorders(List<Backorder> backorders) {
         this.backorders = backorders;
     }
+<<<<<<< HEAD
     
     public String getSTRRZ_SEL_PT() {
         return STRRZ_SEL_PT;
@@ -612,4 +630,6 @@ public class SupplierSelSPX implements Serializable {
     public void setSTRRZ_SEL_PT(String STRRZ_SEL_PT) {
         this.STRRZ_SEL_PT = STRRZ_SEL_PT;
     }
+=======
+>>>>>>> mexico
 }

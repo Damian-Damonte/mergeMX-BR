@@ -1,6 +1,11 @@
 package com.metalsa.catalogo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+<<<<<<< HEAD
+=======
+import com.metalsa.core.model.DcEstatus;
+import com.metalsa.core.model.NvcTblOaProveedoresH;
+>>>>>>> mexico
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -16,6 +21,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+<<<<<<< HEAD
+=======
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+>>>>>>> mexico
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -117,6 +127,27 @@ public class NvcTblCatalogo implements Serializable {
     private Integer activo;
     @Column(name = "ID_PROVEEDOR")
     private Integer idProveedor;
+<<<<<<< HEAD
+=======
+    
+    @JoinColumn(
+            name = "ID_PROVEEDOR",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    private NvcTblOaProveedoresH proveedor;
+    
+    @JoinColumn(
+            name = "PUBLICADO",
+            referencedColumnName = "SC_ID",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    private DcEstatus estatusPublicado;
+    
+>>>>>>> mexico
     @Transient
     private String nombreProveedor;
     @Column(name = "PUBLICADO")
@@ -299,4 +330,15 @@ public class NvcTblCatalogo implements Serializable {
     public void setNombreUsuarioAct(String nombreUsuarioAct) {
         this.nombreUsuarioAct = nombreUsuarioAct;
     }
+<<<<<<< HEAD
+=======
+    
+    public NvcTblOaProveedoresH getProveedor() {
+        return this.proveedor;
+    }
+    
+    public DcEstatus getEstatusPublicado() {
+        return this.estatusPublicado;
+    }
+>>>>>>> mexico
 }

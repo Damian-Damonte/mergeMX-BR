@@ -70,6 +70,9 @@ public class CategoriaSolicitud implements Serializable {
     @Column(name="visto")
     private Integer visto;
     
+    @Column(name="COMENTARIOS")
+    private String comentarios;
+    
     @OneToMany
     @JoinColumn(name="ACC_CAT_ID", referencedColumnName = "ID_CATEGORIA_DESTINO")
     @Filter(name="idiomaUsuarioFilter", condition="IDIOMA=:idIdioma")

@@ -69,8 +69,11 @@ public interface ReqPorAprobarProcedures {
     Integer validaPresupProySpx(Long idUen,Long idProyecto, Long idTarea, String TipoGasto,Double monto);//<T428940>
     
     NvcTblProvSitesH getProveedorSite(Long requisicion);
+<<<<<<< HEAD
     
     //<RELEASE_BRASIL>
     Integer actualizarPreaprobacionCC(PreaprobacionCC requisicion);
     //</RELEASE_BRASIL>
+=======
+>>>>>>> mexico
 }

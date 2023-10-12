@@ -96,7 +96,7 @@ public class CuentasFamiliaCC implements Serializable {
     private Date endDateActive;
 
     @JsonProperty("cuenta_natural")
-    @Column(name = "cuenta_natural")
+    @Column(name = "CUENTA_NATURAL")
     private String cuentaNatural;
     
     @JsonProperty("id_uen")

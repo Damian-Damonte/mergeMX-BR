@@ -6,6 +6,7 @@
 package com.metalsa.requisicion.service;
 
 import com.metalsa.aprobacion.model.Usuario;
+import com.metalsa.aprobacion.model.Requisicion;
 import com.metalsa.core.model.NvcTblOaProveedoresH;
 import com.metalsa.requisicion.pojo.RequisicionFad;
 import com.metalsa.requisicion.pojo.RequisicionFadRequest;
@@ -28,5 +29,7 @@ public interface ConsRequisicionService {
     List<RequisicionFad> findFadByFilters(RequisicionFadRequest request);
     
     public ByteArrayInputStream exportToExcel(RequisicionFadRequest request, Locale locale);
+    
+    public Requisicion createRequisicion(Requisicion requisicion);
     
 }

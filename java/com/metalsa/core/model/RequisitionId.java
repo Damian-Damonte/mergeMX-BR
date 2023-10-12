@@ -30,7 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
         + "  r.id_uen, u.organization_name "                
         + "from detalle_de_requisicion d inner join  requisicion r on d.ID_REQUISICION = r.ID_REQUISICION "
         + " INNER JOIN oa_uens u ON u.organization_id = r.id_uen "
+<<<<<<< HEAD
         + "WHERE r.ID_USUARIO = ?1 and d.id_estatus = 27 "//d.estatus = 'SEL COTIZACION'"
+=======
+        + "WHERE r.ID_USUARIO = ?1 and d.estatus = 'SEL COTIZACION'"
+>>>>>>> mexico
         + " and r.id_uen in (select id_uen from uen_por_usuario where id_usuario = ?1)", resultClass = RequisitionId.class, resultSetMapping = "idReqMap")
 
 @SqlResultSetMapping(name = "idReqMap",

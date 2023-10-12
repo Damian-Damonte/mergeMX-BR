@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Column;
 import java.io.Serializable;
 
 /**
@@ -19,8 +20,10 @@ import java.io.Serializable;
 @Data
 public class ParametroByUen {
     @Id
+    @Column(name = "ID_UEN")
     private Long idUen;
     @Id
+    @Column(name = "ID_PARAMETRO")
     private Long idParametro;
     private String nombre;
     private String descripcion;
@@ -32,8 +35,10 @@ public class ParametroByUen {
     @Data
     public static class Pk implements Serializable {
         @Id
+        @Column(name = "ID_UEN")
         private Long idUen;
         @Id
+        @Column(name = "ID_PARAMETRO")
         private Long idParametro;
     }
 }

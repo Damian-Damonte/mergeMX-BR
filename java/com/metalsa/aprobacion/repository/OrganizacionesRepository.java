@@ -28,6 +28,7 @@ public interface OrganizacionesRepository extends PagingAndSortingRepository<Nvc
     List<UenWithDefault> getUensActivasByUserRol(@Param("idUsuario") String user, @Param("idProceso") Integer idProceso);
 
     List<NvcTblOrganizacionesH> getUensActivasDispByUser(@Param("usuario") String usuario);
+    List<NvcTblOrganizacionesH> getUensActivasByUser2(String userId);
     
     List<NvcTblOrganizacionesH> getUensPreaprobacion(@Param("usuario") String usuario);
 

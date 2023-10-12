@@ -121,7 +121,12 @@ import javax.xml.bind.annotation.XmlRootElement;
             + "  ON PU.ID_UEN = D.ID_UEN"
             + "  AND UPPER (PU.ID_PARAMETRO) = DECODE (D.URGENTE, 'S', 15, 14) "
             + "  JOIN nvc_tbl_rfq RQ ON RQ.ID_RFQ = RFQL.ID_RFQ "
+<<<<<<< HEAD
             + "  WHERE    R.ID_USUARIO = ?1 "
+=======
+            + "  WHERE    R.ID_USUARIO = ?1 AND"
+            + "  D.ESTATUS = 'SEL COTIZACION'"
+>>>>>>> mexico
             + "  AND D.ID_ESTATUS = 27"
             + "  AND 0 < ("
             + "  SELECT COUNT (*)"

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.io.Serializable;
+import javax.persistence.Column;
 
 /**
  * Created by IntelliJ Idea
@@ -23,8 +24,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ParametroUenCia {
     @Id
+    @Column(name = "ID_UEN")
     private Long idUen;
     @Id
+    @Column(name = "ID_PARAMETRO")
     private Long idParametro;
     private String valor;
 
@@ -36,8 +39,10 @@ public class ParametroUenCia {
     @AllArgsConstructor
     public static class Pk implements Serializable {
         @Id
+        @Column(name = "ID_UEN")
         private Long idUen;
         @Id
+        @Column(name = "ID_PARAMETRO")
         private Long idParametro;
     }
 }

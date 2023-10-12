@@ -41,4 +41,8 @@ public interface SolicitudIncrementoRepository extends PagingAndSortingRepositor
     
     RespuestaPojo cancelarSolicitud(Long id, String usuario);
     
+    String siguienteAprobador(Integer id_solicitud, Long idUen, Long idCcOrigen, String tipo);
+
+    SolicitudIncremento findByIdSolicitudPresupuesto(Long idSolicitud);
+    
 }

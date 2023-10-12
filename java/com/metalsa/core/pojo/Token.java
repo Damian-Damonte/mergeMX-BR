@@ -19,18 +19,17 @@ public class Token {
     private String idIdioma;
     private String vistaSeleccion;
     private String vistaAprobacion;
-    private String localidad;
+
     public Token(){};
     
-    public Token(String idUsuario, String nombreUsuario, Integer idRol, String idioma, String idIdioma, String vistaSeleccion, String vistaAprobacion, String localidad){
+    public Token(String idUsuario, String nombreUsuario, Integer idRol, String idioma, String idIdioma, String vistaSeleccion, String vistaAprobacion){
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.idRol = idRol;
         this.idioma = idioma;
-	    this.idIdioma = idIdioma;
-	    this.vistaSeleccion = vistaSeleccion;
+        this.idIdioma = idIdioma;
+        this.vistaSeleccion = vistaSeleccion;
         this.vistaAprobacion = vistaAprobacion;
-        this.localidad = localidad;
     };
     
     /**
@@ -106,6 +105,7 @@ public class Token {
     public void setVistaAprobacion(String vistaAprobacion) {
         this.vistaAprobacion = vistaAprobacion;
     }
+<<<<<<< HEAD
     
     public String getLocalidad() {
         return localidad;
@@ -116,3 +116,7 @@ public class Token {
     }
 }
 
+=======
+}
+//</PERFIL>
+>>>>>>> mexico

@@ -11,6 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     query="select * from nvc_tbl_udm where lenguaje = ?1",
     resultClass = Udm.class
 )
+@NamedQueries({
+    @NamedQuery(name="Udm.getByIdUnidadMedida", query="SELECT u FROM Udm u WHERE udm=:idUnidadDeMedida"),
+})
 public class Udm implements Serializable {
     
     @Id

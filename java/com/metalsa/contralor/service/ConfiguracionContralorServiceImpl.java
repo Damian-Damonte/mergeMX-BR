@@ -177,25 +177,25 @@ public class ConfiguracionContralorServiceImpl<T, ID extends Serializable> imple
                     "    case when ccu.id_proceso_uen is not null then 'Por Proceso' end tipo_responsabilidad\n" +
                     "    , mi.tipo_requisicion tipo_requisicion_interno, mi.monto_inicial monto_inicial_interno, mi.monto_final monto_final_interno\n" +
                     "    , me.tipo_requisicion tipo_requisicion_externo, me.monto_inicial monto_inicial_externo, me.monto_final monto_final_externo\n" +
-                    " from compras_as.nvc_tbl_proceso_uen pup\n" +
-                    "    left join compras_as.nvc_tbl_proceso_uen pu on pu.id_proceso_padre = pup.id_proceso_uen\n" +
-                    "    join compras_as.nvc_tbl_proceso pp on pp.id_proceso = pup.id_proceso\n" +
-                    "    join compras_as.nvc_tbl_proceso ph on ph.id_proceso = pu.id_proceso\n" +
-                    "    join compras_as.nvc_tbl_proceso_uen_cc puch on puch.id_proceso_uen = pu.id_proceso_uen\n" +
-                    "    join compras_as.nvc_vm_oa_cc cch on cch.id_cc = puch.id_cc\n" +
+                    " from compras.nvc_tbl_proceso_uen pup\n" +
+                    "    left join compras.nvc_tbl_proceso_uen pu on pu.id_proceso_padre = pup.id_proceso_uen\n" +
+                    "    join compras.nvc_tbl_proceso pp on pp.id_proceso = pup.id_proceso\n" +
+                    "    join compras.nvc_tbl_proceso ph on ph.id_proceso = pu.id_proceso\n" +
+                    "    join compras.nvc_tbl_proceso_uen_cc puch on puch.id_proceso_uen = pu.id_proceso_uen\n" +
+                    "    join compras.nvc_vm_oa_cc cch on cch.id_cc = puch.id_cc\n" +
                     "        and cch.lenguaje = 'ESA' and cch.id_uen = pu.id_uen\n" +
-                    "    join compras_as.usuario resp on resp.id_usuario = pup.responsable\n" +
-                    "    join compras_as.usuario sub on sub.id_usuario = pu.responsable\n" +
-                    "    join compras_as.cc_por_usuario ccu on ccu.id_cc = cch.id_cc \n" +
+                    "    join compras.usuario resp on resp.id_usuario = pup.responsable\n" +
+                    "    join compras.usuario sub on sub.id_usuario = pu.responsable\n" +
+                    "    join compras.cc_por_usuario ccu on ccu.id_cc = cch.id_cc \n" +
                     "        and ccu.id_uen = pu.id_uen\n" +
                     "        and ccu.tipo_de_relacion in ('Resp', 'Del')\n" +
-                    "   join compras_as.montos_por_nivel mi on mi.id_nivel = ccu.nivel_rqi\n" +
+                    "   join compras.montos_por_nivel mi on mi.id_nivel = ccu.nivel_rqi\n" +
                     "        and mi.id_uen = ccu.id_uen\n" +
                     "       and mi.tipo_requisicion = 'INTERNA'\n" +
-                    "    join compras_as.montos_por_nivel me on me.id_nivel = ccu.nivel_rqe\n" +
+                    "    join compras.montos_por_nivel me on me.id_nivel = ccu.nivel_rqe\n" +
                     "        and me.id_uen = ccu.id_uen\n" +
                     "        and me.tipo_requisicion = 'EXTERNA' \n" +
-                    "    join compras_as.oa_uens o on o.organization_id = pu.id_uen\n" +
+                    "    join compras.oa_uens o on o.organization_id = pu.id_uen\n" +
                     "    join usuario ucc on ucc.id_usuario = ccu.id_usuario\n" +
                     " where 1 = 1\n" +
                     " and pu.id_uen = " + request.getUen() +

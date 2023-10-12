@@ -1,5 +1,10 @@
 package com.metalsa.catalogo.model;
 
+<<<<<<< HEAD
+=======
+import com.metalsa.core.model.DcEstatus;
+import com.metalsa.requisicion.model.NvcTblUdm;
+>>>>>>> mexico
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -15,6 +20,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+<<<<<<< HEAD
+=======
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.EntityManager;
+import javax.persistence.OneToMany;
+>>>>>>> mexico
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -22,6 +34,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.type.StringType;
+<<<<<<< HEAD
+=======
+import com.metalsa.requisicion.model.NvcTblRazonUrgencia;
+import com.metalsa.requisicion.model.NvcTblMonedasH;
+>>>>>>> mexico
 
 /**
  *
@@ -371,6 +388,7 @@ public class NvcTblCatalogoItem implements Serializable {
 
     @Column(name = "ID_MONEDA")
     private String idMoneda;
+<<<<<<< HEAD
 
     @Column(name = "ID_ESTATUS")
     private Integer idEstatus;
@@ -380,6 +398,62 @@ public class NvcTblCatalogoItem implements Serializable {
 
     @Column(name = "ID_CATALOGO_UEN")
     private Integer idCatalogoUen;
+=======
+    
+    @JoinColumn(
+            name = "ID_MONEDA",
+            referencedColumnName = "ID_MONEDA",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne
+    private NvcTblMonedasH moneda;
+
+    @Column(name = "ID_ESTATUS")
+    private Integer idEstatus;
+    
+    @JoinColumn(
+            name = "ID_ESTATUS",
+            referencedColumnName = "SC_ID",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne
+    private DcEstatus estatus;
+
+    @Column(name = "ITEM_PUBLICADO")
+    private Integer itemPublicado;
+    
+    @JoinColumn(
+            name = "ITEM_PUBLICADO",
+            referencedColumnName = "SC_ID",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    private DcEstatus itemPublicadoEstatus;
+
+    @Column(name = "ID_CATALOGO_UEN")
+    private Integer idCatalogoUen;
+    
+    @JoinColumn(
+            name = "ID_CATALOGO_UEN",
+            referencedColumnName = "ID_CATALOGO_UEN",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne()
+    NvcTblCatalogoUen catalogoUen;
+    
+    @JoinColumn(
+            name = "UDM",
+            referencedColumnName = "ID_UDM",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne
+    private NvcTblUdm unidadDeMedida;
+>>>>>>> mexico
 
     @Transient
     @Column(name = "id_categoria")
@@ -422,6 +496,21 @@ public class NvcTblCatalogoItem implements Serializable {
     @Column(name = "desc_estatus")
     @Transient
     private String descEstatus;
+<<<<<<< HEAD
+=======
+    
+    @Column(name = "ID_RAZON_URGENCIA")
+    private Integer idRazonUrgencia;
+    
+    @JoinColumn(
+            name = "ID_RAZON_URGENCIA",
+            referencedColumnName = "ID_RAZON_URGENCIA",
+            insertable = false,
+            updatable = false
+    )
+    @ManyToOne
+    private NvcTblRazonUrgencia razonUrgencia;
+>>>>>>> mexico
 
     public NvcTblCatalogoItem() {
     }
@@ -875,4 +964,42 @@ public class NvcTblCatalogoItem implements Serializable {
     public void setDescEstatus(String descEstatus) {
         this.descEstatus = descEstatus;
     }
+<<<<<<< HEAD
+=======
+    
+    public DcEstatus getEstatus() {
+        return this.estatus;
+    }
+    
+    public DcEstatus getItemPublicadoEstatus() {
+        return this.itemPublicadoEstatus;
+    }
+    
+    public NvcTblCatalogoUen getCatalogoUen() {
+        return this.catalogoUen;
+    }
+    
+    public static NvcTblCatalogoItem byId(Integer id, EntityManager em) {
+        return em
+                .createNamedQuery("NvcTblCatalogoItem.findByIdItem", NvcTblCatalogoItem.class)
+                .setParameter("idItem", id)
+                .getSingleResult();
+    }
+    
+    public NvcTblUdm getUnidadDeMedida() {
+        return this.unidadDeMedida;
+    }
+    
+    public Integer getIdRazonUrgencia() {
+        return this.idRazonUrgencia;
+    }
+    
+    public NvcTblRazonUrgencia getRazonUrgencia() {
+        return this.razonUrgencia;
+    }
+    
+    public NvcTblMonedasH getMoneda() {
+        return this.moneda;
+    }
+>>>>>>> mexico
 }

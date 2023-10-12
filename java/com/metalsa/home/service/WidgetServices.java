@@ -95,14 +95,8 @@ public class WidgetServices {
     Iterable<WidgetPorUsuario> getWidgetsByUser(@RequestParam("rolesUsuario") List<Integer> rolesUsuario,
             @RequestParam("idUsuario") String idUsuario) {
 
-        Logger.getLogger(WidgetServices.class.getName()).log(Level.SEVERE, "en widget service", "en widget service");
-
-        List<WidgetPorUsuario> widgetsUsuario = widgetUser.getWidgetsByUser(rolesUsuario, idUsuario);
-       
-        if (widgetsUsuario.isEmpty() 
-                || !widgetsUsuario.stream().anyMatch(x -> x.getIdWidget().equals(8))
-                || !widgetsUsuario.stream().anyMatch(x -> x.getIdWidget().equals(1))) {
-            Logger.getLogger(WidgetServices.class.getName()).log(Level.SEVERE, "en if widget service", "en if widget service"); 
+        List widgetsUsuario = widgetUser.getWidgetsByUser(rolesUsuario, idUsuario);
+        if (null == widgetsUsuario || widgetsUsuario.isEmpty()) {
             widgetUser.creaWidgetsDefault(idUsuario);
             widgetsUsuario = widgetUser.getWidgetsByUser(rolesUsuario, idUsuario);
         }

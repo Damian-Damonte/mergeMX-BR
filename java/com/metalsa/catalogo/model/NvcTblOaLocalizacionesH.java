@@ -11,6 +11,10 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+<<<<<<< HEAD
+=======
+import javax.persistence.EntityManager;
+>>>>>>> mexico
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,7 +28,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "NVC_TBL_OA_LOCALIZACIONES_H")
 @XmlRootElement
 @NamedQueries({
+<<<<<<< HEAD
     @NamedQuery(name = "NvcTblOaLocalizacionesH.findAll", query = "SELECT n FROM NvcTblOaLocalizacionesH n")
+=======
+    @NamedQuery(name = "NvcTblOaLocalizacionesH.findAll", query = "SELECT n FROM NvcTblOaLocalizacionesH n"),
+    @NamedQuery(
+            name = "NvcTblOaLocalizacionesH.findByIdLocalizacion",
+            query = "SELECT n FROM NvcTblOaLocalizacionesH n WHERE n.idLocalizacion = :idLocalizacion"
+    )
+>>>>>>> mexico
 })
 @NamedNativeQueries({
     @NamedNativeQuery(
@@ -212,5 +224,14 @@ public class NvcTblOaLocalizacionesH implements Serializable {
     public String toString() {
         return "com.metalsa.dcompras.entities.admin.NvcTblOaLocalizacionesH[ idLocalizacion=" + idLocalizacion + " ]";
     }
+<<<<<<< HEAD
+=======
+    
+    public static NvcTblOaLocalizacionesH byId(BigDecimal id, EntityManager em) {
+        return em.createNamedQuery("NvcTblOaLocalizacionesH.findByIdLocalizacion", NvcTblOaLocalizacionesH.class)
+                .setParameter("idLocalizacion", id)
+                .getSingleResult();
+    }
+>>>>>>> mexico
 
 }

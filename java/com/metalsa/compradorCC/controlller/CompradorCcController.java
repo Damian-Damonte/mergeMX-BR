@@ -59,9 +59,9 @@ public class CompradorCcController {
 
     @RequestMapping("getUenCc/{idUsuario}")
     @ResponseBody
-    public Iterable<NvcTblOrganizacionesH> getUenCc(@PathVariable String idUsuario) {
+    public Iterable<NvcTblOrganizacionesH> getUenCc(@PathVariable String idUsuario) {         
         Iterable<NvcTblOrganizacionesH> listUensCc = compradorCcService.getUensCc(idUsuario);
-
+        
         return listUensCc;
     }
 

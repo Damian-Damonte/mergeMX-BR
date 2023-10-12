@@ -197,9 +197,9 @@ public class MatrizPagosServiceImpl implements MatrizPagosService {
         if (fechaMin != null && fechaMax != null) {
             calInicial.setTime(fechaMin.getInvoiceCreationDate());
             calFinal.setTime(fechaMax.getInvoiceCreationDate());
-            log.debug("a�o inicial" + calInicial.get(Calendar.YEAR));
-            log.debug("men inicial" + calInicial.get(Calendar.MONTH));
-            log.debug("a�o final" + calFinal.get(Calendar.YEAR));
+            log.debug("year inicial" + calInicial.get(Calendar.YEAR));
+            log.debug("mes inicial" + calInicial.get(Calendar.MONTH));
+            log.debug("year final" + calFinal.get(Calendar.YEAR));
             log.debug("mes final" + calFinal.get(Calendar.MONTH));
             return periodosRepository.findByPorRangoAnioMes(calInicial.get(Calendar.YEAR), calFinal.get(Calendar.YEAR), calInicial.get(Calendar.MONTH) + 1, calFinal.get(Calendar.MONTH) + 1, Constants.getIdioma(idioma));
         } else if (flag) {

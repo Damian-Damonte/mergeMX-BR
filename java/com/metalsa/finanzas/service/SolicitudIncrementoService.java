@@ -24,6 +24,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+import java.util.stream.Collectors;
+>>>>>>> mexico
 import javax.persistence.EntityManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -255,6 +259,7 @@ public class SolicitudIncrementoService {
                 String etapa;
                 String idiomaEbs = Constants.getIdioma(idioma);
 
+<<<<<<< HEAD
                 log.debug("idioma: " + idioma);
                 if (data.getTipo().equals("INCREASE")) {
                     tipoCorreo = "APROB FINANZAS: CREADA_INCREMENTO";
@@ -268,6 +273,50 @@ public class SolicitudIncrementoService {
                 log.debug(envioresponse.toString());
             } catch (Exception e) {
                 log.debug("error al enviar notificacion de creacion de solicitud a presupuesto " + e.getMessage());
+=======
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                //author: juan.munoz
+                //fecha: 10/Jun/2021
+                //task redmine 63757
+                //
+                //Aqui buscamos los siguientes aprobadores, si el usuario creacion se encuentra entre los 
+                //siguientes aprobadores, entonces procedemos a hacer la llamada del metodo de aprobacion
+                //
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                String siguienteAprobador = solicitudIncrementoRepository.siguienteAprobador(resp.getValor(), data.getIdUen(), data.getIdCcOrigen(), data.getTipo());
+                if(siguienteAprobador != null && siguienteAprobador.contains(data.getUsuarioCreacion())){
+                    SolicitudIncremento solicitudIncremento = solicitudIncrementoRepository.findByIdSolicitudPresupuesto(Long.parseLong(resp.getValor().toString()));
+                    log.debug("categorias: " + solicitudIncremento.getCategorias().size());
+                    List<CategoriaPojo> listCategorias = solicitudIncremento.getCategorias().stream().map(cat ->{
+                        CategoriaPojo p = new CategoriaPojo();
+                        p.setId(cat.getId());
+                        return p;
+                    }).collect(Collectors.toList());
+                    ActualizarPojo actualizarPojo = new ActualizarPojo();
+                    actualizarPojo.setAccion("AUTO_APROBACION_CC");
+                    actualizarPojo.setUsuario(data.getUsuarioCreacion());
+                    actualizarPojo.setRazon("");
+                    actualizarPojo.setCategorias(listCategorias);
+                    this.actualizarSolicitud(actualizarPojo,idiomaEbs);
+                }else{
+                    log.debug("idioma: " + idioma);
+                    if (data.getTipo().equals("INCREASE")) {
+                        tipoCorreo = "APROB FINANZAS: CREADA_INCREMENTO";
+                        etapa = "4";
+                    } else {
+                        tipoCorreo = "APROB FINANZAS: CREADA_TRANSFERENCIA";
+                        etapa = "5";
+                    }
+                    log.debug("datos: " + resp.getValor().toString() + "-" + idiomaEbs + "-" + tipoCorreo + "-" + etapa);
+                    RespuestaPojo envioresponse = notificacionFinanzasRepository.enviarNotificacion(resp.getValor().toString(), idiomaEbs, tipoCorreo, etapa);
+                    log.debug(envioresponse.toString());
+                }
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                //FIN siguientes aprobadores
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            } catch (Exception e) {
+                log.error("error al enviar notificacion de creacion de solicitud a presupuesto " + e.getMessage(), e);
+>>>>>>> mexico
             }
 
         }
@@ -304,6 +353,13 @@ public class SolicitudIncrementoService {
                     tipoCorreo = "APROB FINANZAS: RECHAZADAS";
                     etapa = "3";
                     break;
+<<<<<<< HEAD
+=======
+                case "AUTO_APROBACION_CC":
+                    tipoCorreo = "APROB FINANZAS: APROBADAS";
+                    etapa = "1";
+                    break;
+>>>>>>> mexico
                 default:
                     break;
             }

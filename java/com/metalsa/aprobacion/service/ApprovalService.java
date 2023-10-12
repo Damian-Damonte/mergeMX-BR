@@ -125,7 +125,7 @@ public class ApprovalService {
             if (proyectValues[0].equals("P")) {
                 Double monto = new Double(0);
                 for (CheckBudgetRequest i : requisList) {
-                    if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2]))) {
+                    if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2])) && Objects.equals(i.getCuenta(), Long.valueOf(proyectValues[3]))) {
                         monto = monto + i.getMonto();
                     }
                 }
@@ -134,7 +134,7 @@ public class ApprovalService {
                 if (p_result == 1 || p_result == 100 || p_result == -200 || p_result == -300 || p_result == -400 || p_result == -500 || p_result == -600 || p_result == -700
                         || p_result == -1 || p_result == 1 || p_result == -2 || p_result == -3 || p_result == -4 || p_result == -5 || p_result == -6 || p_result == -7) {
                     for (CheckBudgetRequest i : items) {
-                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2]))) {
+                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2])) && Objects.equals(i.getCuenta(), Long.valueOf(proyectValues[3]))) {
                             if (i != null && i.isPreAprobacion()) {
                                 result.add(new ApprovedItem(i.getCuenta(), true, false));
                             } else {
@@ -144,7 +144,7 @@ public class ApprovalService {
                     }
                 } else {
                     for (CheckBudgetRequest i : items) {
-                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2]))) {
+                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2])) && Objects.equals(i.getCuenta(), Long.valueOf(proyectValues[3]))) {
                             result.add(new ApprovedItem(i.getCuenta(), true, false));
                         }
                     }
@@ -165,7 +165,7 @@ public class ApprovalService {
                 if (p_result == 1 || p_result == 100 || p_result == -200 || p_result == -300 || p_result == -400 || p_result == -500 || p_result == -600 || p_result == -700
                         || p_result == -1 || p_result == 1 || p_result == -2 || p_result == -3 || p_result == -4 || p_result == -5 || p_result == -6 || p_result == -7) {
                     for (CheckBudgetRequest i : items) {
-                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2]))) {
+                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2])) && Objects.equals(i.getTarea(), Long.valueOf(proyectValues[3]))) {
                             if (i != null && i.isPreAprobacion()) {
                                 result.add(new ApprovedItem(i.getCuenta(), true, false));
                             } else {
@@ -175,7 +175,7 @@ public class ApprovalService {
                     }
                 } else {
                     for (CheckBudgetRequest i : items) {
-                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2]))) {
+                        if (Objects.equals(i.getProyecto(), Long.valueOf(proyectValues[2])) && Objects.equals(i.getTarea(), Long.valueOf(proyectValues[3]))) {
                             result.add(new ApprovedItem(i.getCuenta(), true, false));
                         }
                     }
@@ -228,8 +228,11 @@ public class ApprovalService {
                 //
                 CheckBudgetRequest item = items.stream().filter(x -> x.getCuenta()!=null && x.getCuenta().equals(entry.getKey())).findAny().orElse(null);
                 if (item != null && item.isPreAprobacion()) {
-                    presupuesto.setActual(1D);
-                    entry.setValue(0D);
+                    //ERM 66822 - Aprobacion marca falta de presuuesto pero si cuenta con dinero el CC
+                    BigDecimal presupDispo = new BigDecimal(presupuesto.getDisponible()).setScale(4,RoundingMode.UP);
+                    presupuesto.setActual(presupDispo.doubleValue());
+                    //presupuesto.setActual(1D);
+                    //entry.setValue(0D);
                 } else {
                     BigDecimal presupDispo = new BigDecimal(presupuesto.getDisponible()).setScale(4,RoundingMode.UP);
                     BigDecimal entryValue = new BigDecimal(entry.getValue()).setScale(4,RoundingMode.UP);
@@ -354,8 +357,10 @@ public class ApprovalService {
                     }
                 ).findAny().orElse(null);
                 if (item != null && item.isPreAprobacion()) {
-                    presupuesto.setActual(1D);
-                    entry.setValue(0D);
+                    //ERM 66822 - Aprobacion marca falta de presuuesto pero si cuenta con dinero el CC
+                    presupuesto.setActual(presupuesto.getDisponible());
+                    //presupuesto.setActual(1D);
+                    //entry.setValue(0D);
                 } else {
                     presupuesto.setActual(presupuesto.getDisponible() - entry.getValue());
                 }
@@ -684,125 +689,21 @@ public class ApprovalService {
         List<ApprovalResponse> response = Lists.newArrayList();
         items.forEach(item -> {
             blockItem(item, true); //Aprobacion sin presupuesto
-            Integer result = db.iniAprobarRequisicion(item.getRequisicion(), item.getLinea(), aprobador, modulo, item.getIdCuenta());
+            Integer iResult = db.iniAprobarRequisicion(item.getRequisicion(), item.getLinea(), aprobador, modulo, item.getIdCuenta());
             log.debug(MessageFormat.format("aprobacion: {0,number,#}-{1} --> {2}", item.getRequisicion(),
-                    item.getLinea(), result));
-            if (result == -1) {
-                result = 1;
+                    item.getLinea(), iResult));
+            if (iResult == -1) {
+                iResult = 1;
             }
-            if (result == 70) {
-                result = 9;
+            if (iResult == 70) {
+                iResult = 9;
             }
-
-            if (result == 0 || result == 4 || result == 200 || result == 204) {
+            Object[] oResult = approval_validation.EvalMessageApproval(iResult, item);
                 response.add(new ApprovalResponse(item.getRequisicion(),
                         item.getLinea(),
-                        true,
-                        messages.getMessage("approvals.code." + result, null, LocaleContextHolder.getLocale()),
-                        result));
-            } else if (result == -200) {//<T403785>
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("approvals.valid.project", null, LocaleContextHolder.getLocale())
-                        + messages.getMessage("approvals.valid.contact", null, LocaleContextHolder.getLocale()),
-                        result));
-            } else if (result == -300) {
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("approvals.valid.project_period", null, LocaleContextHolder.getLocale())
-                        + messages.getMessage("approvals.valid.contact", null, LocaleContextHolder.getLocale()),
-                        result));
-            } else if (result == -400) {
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("approvals.valid.task", null, LocaleContextHolder.getLocale())
-                        + messages.getMessage("approvals.valid.contact", null, LocaleContextHolder.getLocale()),
-                        result));
-            } else if (result == -500) {
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("approvals.valid.task.charges", null, LocaleContextHolder.getLocale())
-                        + messages.getMessage("approvals.valid.contact", null, LocaleContextHolder.getLocale()),
-                        result));
-            } else if (result == -600) {
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        creaMensajeErrorAprobar(messages.getMessage("approvals.valid.project_budget_update", null, LocaleContextHolder.getLocale()), item.getRequisicion(), item.getLinea())
-                        + messages.getMessage("approvals.valid.contact", null, LocaleContextHolder.getLocale()),
-                        result));
-            } //</T403785>
-            else if (result == -700) {
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        creaMensajeErrorAprobar(messages.getMessage("approvals.valid.project_budget_in_process", null, LocaleContextHolder.getLocale()),item.getRequisicion(), item.getLinea()),
-                        result));
-            }//</T428940>
-            else if (result == 701) {//<T475293>
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("msj_valida_seleccion_cotizacion" , null, LocaleContextHolder.getLocale()),
-                        result));
-            }//</T475293>
-            else if (result == 702) {//<T479818>
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("msj_valida_cuenta" , null, LocaleContextHolder.getLocale()),
-                        result));
-            }//</T479818>
-            else if (result == 703) {//<T472517>
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("approvals.valid.user.requisitor", null, LocaleContextHolder.getLocale()),
-                        result));
-            }//</T428940>
-            else if (result == 704) {//<T472517>
-                
-                NvcTblProvSitesH site = db.getProveedorSite(item.getRequisicion());
-                
-                if (site!=null)
-                {
-                    response.add(new ApprovalResponse(item.getRequisicion(),
-                            item.getLinea(),
-                            false,
-                            messages.getMessage("msj_proveedor_site_invalido", null, LocaleContextHolder.getLocale()).replace("[site]", site.getVendorSiteCode()).replace("[prov]", site.getVendorName()),
-                            result));
-                }
-                else
-                {
-                    response.add(new ApprovalResponse(item.getRequisicion(),
-                            item.getLinea(),
-                            false,
-                            messages.getMessage("msj_proveedor_site_invalido", null, LocaleContextHolder.getLocale()).replace("[site]", "").replace("[prov]", ""),
-                            result));
-                }
-
-            }
-            else {
-                if (result == 100 || result == 3) {
-                    Optional<DetalleRequisicion> detail = detalles.getByRequisicionAndLinea(item.getRequisicion(), item.getLinea());
-                    if (detail.isPresent()) {
-                        CategoryConfiguration conf = configCategorias.findOne(
-                                new CategoryConfiguration.Pk(detail.get().getUen(), detail.get().getCategoryId()));
-                        if (conf != null && conf.isAprobacionExceso()) {
-                            result = 101;
-                        }
-                    }
-                }
-                response.add(new ApprovalResponse(item.getRequisicion(),
-                        item.getLinea(),
-                        false,
-                        messages.getMessage("approvals.code." + result, null, LocaleContextHolder.getLocale()),
-                        result));
-            }
+                        (boolean)oResult[1],
+                        (String)oResult[0],
+                        iResult));
         });
         Map<Long, List<ApprovalResponse>> externas = response.stream()
                 .filter(r -> r.getResult() == 2)
@@ -884,6 +785,24 @@ public class ApprovalService {
         return response;
     }
 
+    public void validaLineasFad(ApprovalRequest request) {//<T567460>
+        /*
+          Esto es para aprobacion por exceso: las lineas que vengan con razon y solucion
+          son de aprobacion por exceso y en ese caso no se hace chequeo de presupuesto
+          sino que se actualizan esos valores en la BD este fix aplica para requis fad.
+         */        
+        List<ApprovalItemRequest> items = getItems(request);        
+        
+        Map<Long, Set<Long>> porExceso = items.stream()
+                .filter(i -> StringUtils.isNotBlank(i.getRazon()) && StringUtils.isNotBlank(i.getSolucion()))
+                .collect(Collectors.groupingBy(ApprovalItemRequest::getRequisicion,
+                        mapping(ApprovalItemRequest::getLinea, Collectors.toSet())));        
+        items.stream()
+                .filter(i -> porExceso.containsKey(i.getRequisicion())
+                && porExceso.get(i.getRequisicion()).contains(i.getLinea()))
+                .forEach(updateExceededLine());
+    }
+    
     protected Consumer<ApprovalItemRequest> updateExceededLine() {
         return i -> {
             try {

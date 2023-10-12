@@ -6,6 +6,8 @@
 package com.metalsa.requisicion.service;
 
 import com.metalsa.aprobacion.model.Usuario;
+import com.metalsa.aprobacion.model.Requisicion;
+import com.metalsa.aprobacion.model.DetalleRequisicion;
 import com.metalsa.aprobacion.repository.UsuarioRepository;
 import com.metalsa.core.model.NvcTblOaProveedoresH;
 import com.metalsa.requisicion.pojo.RequisicionFad;
@@ -19,9 +21,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Date;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
+import javax.transaction.UserTransaction;
+import javax.transaction.Transactional;
 
 import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
@@ -38,6 +44,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.core.io.Resource;
 
 /**
  *
@@ -412,5 +419,26 @@ public class ConsRequisicionServiceImpl<T, ID extends Serializable> implements C
 
     private String userToListString(List<Usuario> list) {
         return list.stream().map(a -> String.valueOf(a.getId())).collect(Collectors.joining(","));
+    }
+
+    @Override
+    @Transactional
+    public Requisicion createRequisicion(Requisicion requisicion) {
+       Requisicion r = new Requisicion();
+       r.setFecha(new Date());
+       em.persist(r);
+       
+       long linea = 1;
+       Set<DetalleRequisicion> detalles = requisicion.getDetalles();
+       if (detalles != null) {
+           for (DetalleRequisicion detalle : detalles) {
+               detalle.setRequisicion(r.getIdRequisicion());
+               detalle.setLinea(linea++);
+               em.persist(detalle);
+           } 
+           r.setDetalles(detalles);
+       }
+       
+       return r;
     }
 }

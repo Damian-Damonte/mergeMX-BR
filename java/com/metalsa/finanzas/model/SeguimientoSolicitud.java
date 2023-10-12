@@ -91,6 +91,9 @@ public class SeguimientoSolicitud implements Serializable{
 
     @Column(name = "razon")
     private String razon;
+    
+    @Column(name = "comentarios")
+    private String comentarios;
 
     @Column(name = "aprobador_finanzas")
     private String aprobadorFinanzas;

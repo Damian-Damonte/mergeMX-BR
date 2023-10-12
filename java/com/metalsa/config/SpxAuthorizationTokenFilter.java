@@ -145,7 +145,9 @@ public class SpxAuthorizationTokenFilter extends OncePerRequestFilter {
         List<String> allowUrl = new ArrayList();
         allowUrl.add("/getTokenPortal/");
         allowUrl.add("/utilerias/getReclasificacion");
+        allowUrl.add("/utilerias/status");
         allowUrl.add("/sendEmails/");
+        allowUrl.add("/guardarCalificacion");
         return allowUrl.stream().anyMatch(t -> url.contains(t));
     }
 

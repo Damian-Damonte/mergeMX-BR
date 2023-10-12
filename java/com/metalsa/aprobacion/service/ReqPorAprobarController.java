@@ -360,6 +360,16 @@ public class ReqPorAprobarController {
         throw new IllegalArgumentException();
     }
 
+    @RequestMapping(value = "/budget/proyecto", method = RequestMethod.GET)
+    public ProjectBudget obtenerPresupuestoProyecto(
+            @RequestParam("uen") Long uen,
+            @RequestParam("proyecto") Long proyecto,
+            @RequestParam("tarea") Long tarea,
+            @RequestParam("gasto") String gasto
+    ) {
+        return projectBudget.getByUenAndProyectoAndTareaAndTipoGasto(uen, proyecto, tarea, gasto);
+    }
+
     @RequestMapping(value = "/budget/category", params = {"uen", "cc"}, method = RequestMethod.GET)
     public Iterable<CategoryBudget> obtenerCategoriasContables(
             @RequestParam("uen") Long uen,
@@ -443,7 +453,7 @@ public class ReqPorAprobarController {
             boolean filtrar
     ) {
         Integer mes = 12;
-        Integer currenyYear = Calendar.getInstance().get(Calendar.YEAR);
+        Integer currenyYear = Calendar.getInstance().get(Calendar.YEAR) + 1;
         if (filtrar) {
             mes = Calendar.getInstance().get(Calendar.MONTH) + 1;
         }
@@ -629,7 +639,8 @@ public class ReqPorAprobarController {
                 log.debug("Requisicion: " + data.getRequisiciones().get(i).getIdRequisicion());
                 tieneFad = !fadService.getFadByIdReq(data.getRequisiciones().get(i).getIdRequisicion().intValue()).isEmpty();
                 log.debug("tieneFad: " + tieneFad);
-                if (tieneFad) {
+                if (tieneFad) {                    
+                    service.validaLineasFad(data);//<T567460>
                     //Si es fad solo tomo una línea
                     List<LineaVO> lineas = data.getRequisiciones().get(i).getLineas();
                     lineas.subList(1, lineas.size()).clear();
@@ -884,16 +895,12 @@ public class ReqPorAprobarController {
                         for (int i = 0; i < confMeses.getValues().size(); i++) {
                             Valores value = confMeses.getValues().get(i);
                             if ("Y".equals(value.getCondition()) && value.getCondition() != null) {
-                                int iValor = 0;
-                                if(null!=value.getValue()){
-                                        iValor = Integer.parseInt(value.getValue());
-                                    }
                                 if ("PASADO".equals(value.getProperty())) {
-                                    mesInicio = month - iValor;
+                                    mesInicio = month - Integer.parseInt(value.getValue());
                                 }
 
                                 if ("FUTURO".equals(value.getProperty())) {
-                                    mesFin = month + iValor;
+                                    mesFin = month + Integer.parseInt(value.getValue());
                                 }
                             }
                         }

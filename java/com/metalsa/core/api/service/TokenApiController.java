@@ -37,16 +37,15 @@ public class TokenApiController {
     private final String keyString = "m3t4ls4%$P99r#";
 
     @RequestMapping(value = "/getData/{stoken}", method = RequestMethod.GET)
-    public @ResponseBody
-    Token getData(@PathVariable("stoken") String stoken) {
+    public @ResponseBody Token getData(@PathVariable("stoken") String stoken) {
         return getToken(stoken);
     }
 
     //<PERFIL>
     public static Token getToken(String stoken) {
-        String nombre = "", userId = "", idioma = "", idRol="", idIdioma, vistaSeleccion, vistaAprobacion, localidad="";
+        String nombre = "", userId = "", idioma = "", idRol = "", idIdioma, vistaSeleccion, vistaAprobacion;
         Token token = new Token();
-        
+
         try {
             Base64 decode = new Base64(stoken.split("\\.")[1]);
             String strJson = decode.decodeToString();
@@ -57,10 +56,16 @@ public class TokenApiController {
             userId = jsonObject.get("userId").toString();
             idioma = jsonObject.get("idioma").toString();
             idRol = jsonObject.get("idRol").toString();
+<<<<<<< HEAD
 			idIdioma = jsonObject.get("idIdioma").toString();
             vistaSeleccion = jsonObject.get("vistaSeleccion").toString();
             vistaAprobacion = jsonObject.get("vistaAprobacion").toString();
             localidad = jsonObject.get("localidad").toString();
+=======
+            idIdioma = jsonObject.get("idIdioma").toString();
+            vistaSeleccion = jsonObject.get("vistaSeleccion").toString();
+            vistaAprobacion = jsonObject.get("vistaAprobacion").toString();
+>>>>>>> mexico
             token.setIdUsuario(userId);
             token.setNombreUsuario(nombre);
             token.setIdioma(idioma);
@@ -68,7 +73,10 @@ public class TokenApiController {
             token.setIdIdioma(idIdioma);
             token.setVistaSeleccion(vistaSeleccion);
             token.setVistaAprobacion(vistaAprobacion);
+<<<<<<< HEAD
             token.setLocalidad(localidad);
+=======
+>>>>>>> mexico
         } catch (ParseException e) {
             System.out.println("aqui debemos loguear algo");
             //LOG.error("getSubjectToken: ", e);

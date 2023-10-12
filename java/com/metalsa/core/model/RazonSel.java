@@ -27,7 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedNativeQueries({
     @NamedNativeQuery(name = "RazonSel.findRazonesByLanguage", query = "SELECT   ID_RAZON, "
+<<<<<<< HEAD
             + "         DECODE (?1, 'ESA', NOMBRE_ESA, 'US', NOMBRE_US, NOMBRE_PTB) RAZON,UNIONS "
+=======
+            + "         DECODE (?1, 'ESA', NOMBRE_ESA, 'US', NOMBRE_US, NOMBRE_ESA) RAZON,UNIONS "
+>>>>>>> mexico
             + "   FROM RAZON_SEL_COTIZACION "
             + "   WHERE ID_RAZON > 0  "
             + "   AND APLICACION = 'DCompras'  "

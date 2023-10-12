@@ -27,6 +27,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+// Java utils
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+// POJO's
+import com.metalsa.requisicion.pojo.*;
+
 /**
  *
  * @author miguel.rdz
@@ -60,7 +68,7 @@ public class ConsRequisicionController {
     @RequestMapping(value = "getProvsFad", method = RequestMethod.POST)
     @ResponseBody
     public Iterable<NvcTblOaProveedoresH> getProvsFad(@RequestBody RequisicionFadRequest req, @RequestParam("query") String query) {
-        Iterable<NvcTblOaProveedoresH> provDisponibles = null;
+        Iterable<NvcTblOaProveedoresH> provDisponibles;
         List<String> uenList = new ArrayList();
         if (req.getUen().size() > 0) {
             req.getUen().forEach((u) -> {
